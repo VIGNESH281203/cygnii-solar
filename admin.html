@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - CYGNII</title>
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+<div class="admin-container">
+    <div class="admin-header">
+        <img src="CYGNII_Website.jpg" alt="CYGNII Logo">
+        <h1>Admin Portal</h1>
+        <p>Manage System Settings and Users</p>
+    </div>
+
+    <div class="admin-section">
+        <h2>Manage Power Plant Costs</h2>
+        <table class="admin-table">
+            <thead>
+            <tr>
+                <th>Plant Capacity (kW)</th>
+                <th>Cost (₹)</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="admin-plant-cost-tbody">
+            </tbody>
+        </table>
+        <button class="add-row-btn" onclick="addPlantCostRow()">Add New Row</button>
+    </div>
+
+    <div class="admin-section">
+        <h2>Registered Users</h2>
+        <table class="admin-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="admin-users-tbody">
+            </tbody>
+        </table>
+    </div>
+
+    <a href="index.html" class="admin-logout-btn" onclick="logoutAdmin()">Logout</a>
+</div>
+
+<script>
+    // Mock backend data stored in localStorage for persistence across refreshes
+    // This simulates a database for demonstration purposes.
+    let mockPlantCosts = JSON.parse(localStorage.getItem('plantCosts')) || [];
+    let mockUsers = JSON.parse(localStorage.getItem('registeredUsers')) || []; // Get users from localStorage
+
+    // Ensure default admin user exists if localStorage is empty
+    if (!mockUsers.some(user => user.email === "admin@example.com")) {
+        mockUsers.push({ id: 999, name: "Admin User", email: "admin@example.com", password: "admin123", role: "admin" }); // Hardcoded admin
+        localStorage.setItem('registeredUsers', JSON.stringify(mockUsers));
+    }
+
+    // Initialize default plant costs if none exist
+    if (mockPlantCosts.length === 0) {
+        mockPlantCosts = [
+            { id: 1, capacity: 1, cost: 91000 },
+            { id: 2, capacity: 2, cost: 161000 },
+            { id: 3, capacity: 3, cost: 220000 },
+            { id: 4, capacity: 4, cost: 290000 },
+            { id: 5, capacity: 5, cost: 350000 }
+        ];
+        localStorage.setItem('plantCosts', JSON.stringify(mockPlantCosts));
+    }
+
+    // Function to save plant costs to localStorage (simulates saving to database)
+    function savePlantCosts() {
+        localStorage.setItem('plantCosts', JSON.stringify(mockPlantCosts));
+    }
+
+    // Function to save users to localStorage (simulates saving to database)
+    function saveUsers() {
+        localStorage.setItem('registeredUsers', JSON.stringify(mockUsers));
+    }
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Check if admin is logged in (e.g., via localStorage token/role)
+        const userRole = localStorage.getItem('userRole');
+        if (userRole !== 'admin') {
+            alert('Access Denied. Please login as an admin.');
+            window.location.href = 'index.html'; // Redirect to login page
+            return;
+        }
+        loadPlantCosts();
+        loadUsers();
+    });
+
+    function loadPlantCosts() {
+        const tbody = document.getElementById('admin-plant-cost-tbody');
+        tbody.innerHTML = ''; // Clear existing rows
+        // Sort by capacity for better readability
+        mockPlantCosts.sort((a, b) => a.capacity - b.capacity).forEach(rate => {
+            const row = tbody.insertRow();
+            row.innerHTML = `
+                <td><input type="number" value="${rate.capacity}" data-id="${rate.id}" class="capacity-input" min="0.1" step="0.1"></td>
+                <td><input type="number" value="${rate.cost}" data-id="${rate.id}" class="cost-input" min="0"></td>
+                <td>
+                    <button class="update-btn" onclick="updatePlantCost(${rate.id})">Update</button>
+                    <button class="delete-btn" onclick="deletePlantCost(${rate.id})">Delete</button>
+                </td>
+            `;
+        });
+    }
+
+    function addPlantCostRow() {
+        const newId = mockPlantCosts.length > 0 ? Math.max(...mockPlantCosts.map(r => r.id)) + 1 : 1;
+        const newRate = { id: newId, capacity: 0, cost: 0 }; // Default values for new row
+        mockPlantCosts.push(newRate); // Add to mock data
+        savePlantCosts(); // Save the updated mock data
+        loadPlantCosts(); // Re-render table to include new row
+    }
+
+    function updatePlantCost(id) {
+        const capacityInput = document.querySelector(`#admin-plant-cost-tbody input[data-id="${id}"].capacity-input`);
+        const costInput = document.querySelector(`#admin-plant-cost-tbody input[data-id="${id}"].cost-input`);
+
+        const updatedCapacity = parseFloat(capacityInput.value); // Use parseFloat for kW
+        const updatedCost = parseInt(costInput.value);
+
+        if (isNaN(updatedCapacity) || isNaN(updatedCost) || updatedCapacity <= 0 || updatedCost < 0) { // Cost can be 0 (e.g. free)
+            alert('Please enter valid positive numbers for capacity and non-negative for cost.');
+            return;
+        }
+
+        const index = mockPlantCosts.findIndex(rate => rate.id === id);
+        if (index !== -1) {
+            mockPlantCosts[index].capacity = updatedCapacity;
+            mockPlantCosts[index].cost = updatedCost;
+            savePlantCosts(); // Save the updated mock data
+            alert('Plant cost updated successfully locally!');
+            loadPlantCosts(); // Re-sort and re-render to reflect changes
+        }
+    }
+
+    function deletePlantCost(id) {
+        if (!confirm('Are you sure you want to delete this plant cost entry?')) {
+            return;
+        }
+        mockPlantCosts = mockPlantCosts.filter(rate => rate.id !== id);
+        savePlantCosts(); // Save the updated mock data
+        alert('Plant cost deleted successfully locally!');
+        loadPlantCosts();
+    }
+
+    function loadUsers() {
+        const tbody = document.getElementById('admin-users-tbody');
+        tbody.innerHTML = '';
+        mockUsers.forEach(user => {
+            const row = tbody.insertRow();
+            row.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.email}</td>
+                <td>${user.phone}</td>
+                <td>${user.role}</td>
+                <td>
+                    ${user.role !== 'admin' ? `<button class="delete-btn" onclick="deleteUser(${user.id})">Delete</button>` : ''}
+                </td>
+            `;
+        });
+    }
+
+    function deleteUser(id) {
+        if (!confirm('Are you sure you want to delete this user?')) {
+            return;
+        }
+        mockUsers = mockUsers.filter(user => user.id !== id);
+        saveUsers(); // Save the updated mock user data
+        alert('User deleted successfully locally!');
+        loadUsers();
+    }
+
+    function logoutAdmin() {
+        localStorage.removeItem('userRole'); // Clear role on logout
+        // In a real app: clear token from localStorage too
+        // localStorage.removeItem('authToken');
+        alert('You have been logged out successfully from Admin Portal.');
+    }
+</script>
+</body>
+</html>

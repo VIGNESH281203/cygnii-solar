@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Selection System - CYGNII</title>
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+<div class="container">
+    <div class="header">
+        <img src="CYGNII_Website.jpg" alt="CYGNII Logo">
+        <h1 id="main-title">CYGNII SOLAR</h1>
+        <p id="main-subtitle">Step-by-step process</p>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <div id="language-page" class="page active">
+        <h2 class="section-title" id="language-title">Select Language</h2>
+        <div class="languages">
+            <button class="btn btn-te" onclick="selectLanguage('te')">తెలుగు</button>
+            <button class="btn" onclick="selectLanguage('en')">English</button>
+        </div>
+
+        <button class="next-btn" onclick="goToPage('auth-page', 33.33)">Continue</button>
+    </div>
+
+    <div id="auth-page" class="page">
+        <div id="login-form">
+            <h2 class="section-title" id="login-title">Login to Your Account</h2>
+            <form onsubmit="event.preventDefault(); login();"> <div class="form-group">
+                <label for="login-email" id="email-label">Email Address</label>
+                <input type="email" id="login-email" placeholder="Enter your email" required>
+            </div>
+                <div class="form-group">
+                    <label for="login-password" id="password-label">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="form-btn" id="login-btn">Login</button>
+            </form>
+            <div class="switch-auth">
+                <p id="no-account">Don't have an account? <a onclick="showRegister()" id="register-link">Register here</a></p>
+            </div>
+        </div>
+
+        <div id="register-form" style="display: none;">
+            <h2 class="section-title" id="register-title">Create Account</h2>
+            <form onsubmit="event.preventDefault(); register();"> <div class="form-group">
+                <label for="name" id="name-label">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+            </div>
+                <div class="form-group">
+                    <label for="phone" id="phone-label">Phone Number</label>
+                    <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                </div>
+                <div class="form-group">
+                    <label for="email" id="reg-email-label">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" id="reg-password-label">Password</label>
+                    <input type="password" id="password" placeholder="Create a password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password" id="confirm-label">Confirm Password</label>
+                    <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="form-btn" id="register-btn">Register</button>
+            </form>
+            <div class="switch-auth">
+                <p id="have-account">Already have an account? <a onclick="showLogin()" id="login-link">Login here</a></p>
+            </div>
+        </div>
+
+        <div class="nav-controls">
+            <button class="prev-btn" onclick="goToPage('language-page', 0)">Back</button>
+        </div>
+        <div class="admin-link">
+            <a href="#" onclick="showAdminPrompt()" id="admin-link-guest">Guest Admin Access (for testing)</a>
+        </div>
+    </div>
+
+    <div id="property-page" class="page">
+        <h2 class="section-title" id="property-title">Select Property Type</h2>
+        <div class="property-options">
+            <div class="option-group">
+                <div class="main-options">
+                    <div class="option-btn" data-option="house" id="house-btn">House</div>
+                    <div class="option-btn" data-option="commercial" id="commercial-btn">Commercial</div>
+                    <div class="option-btn" data-option="service" id="service-btn">Service</div>
+                </div>
+            </div>
+
+            <div id="subOptions" class="sub-options">
+                <h3 id="sub-options-title">Select House Type:</h3>
+                <div class="sub-options-container">
+                    <div class="option-btn sub-btn" data-suboption="pm-surya-gahr" id="pm-btn">PM Surya Gahr</div>
+                    <div class="option-btn sub-btn" data-suboption="non-dcr" id="non-dcr-btn">Non DCR</div>
+                </div>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <div id="pm-details" class="pm-details">
+                <div class="pm-section">
+                    <h3 id="documents-title">Documents Required</h3>
+                    <p id="documents-note">All documents should belong to the same person whose name is on the current bill</p>
+                    <ul class="doc-list">
+                        <li id="doc1">Aadhar Card</li>
+                        <li id="doc2">PAN Card</li>
+                        <li id="doc3">Bank Pass Book</li>
+                        <li id="doc4">4 Months Current Bill</li>
+                        <li id="doc5">Aadhar Linked Mobile Number</li>
+                    </ul>
+                </div>
+
+                <div class="pm-section">
+                    <h3 id="subsidy-title">Subsidy</h3>
+                    <table class="pm-table">
+                        <thead>
+                        <tr>
+                            <th id="plant-capacity-header">Plant Capacity</th>
+                            <th id="subsidy-amount-header">Subsidy Amount</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1 kW</td>
+                            <td>₹30,000</td>
+                        </tr>
+                        <tr>
+                            <td>2 kW</td>
+                            <td>₹60,000</td>
+                        </tr>
+                        <tr>
+                            <td>3-10 kW</td>
+                            <td>₹78,000</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pm-section">
+                    <h3 id="plant-cost-title">Plant Cost</h3>
+                    <table class="pm-table">
+                        <thead>
+                        <tr>
+                            <th id="plant-capacity-header2">Plant Capacity</th>
+                            <th id="cost-header">Cost</th>
+                        </tr>
+                        </thead>
+                        <tbody id="customer-plant-cost-tbody">
+                        </tbody>
+                    </table>
+
+                    <div class="cost-controls">
+                        <div class="cost-input">
+                            <label for="custom-kw" id="custom-kw-label">Custom Plant Size (4-9 kW):</label>
+                            <input type="number" id="custom-kw" min="4" max="9" value="4" readonly>
+                        </div>
+                        <div class="cost-input">
+                            <label for="custom-cost" id="custom-cost-label">Custom Cost:</label>
+                            <input type="text" id="custom-cost" value="₹2,90,000" readonly>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px;">
+                        <label for="more-details" id="details-label">More Details:</label>
+                        <textarea id="more-details" rows="3" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;" readonly>Additional details about the plant installation can be added here.</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-controls">
+            <button class="prev-btn" onclick="goToPage('auth-page', 33.33)">Back to Login</button>
+            <button class="next-btn" onclick="logoutCustomer()">Logout</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2023 CYGNII Property Selection System | All Rights Reserved</p>
+    </div>
+</div>
+
+<script>
+    // Current language
+    let currentLanguage = localStorage.getItem('userLanguage') || 'en';
+    let currentUserRole = localStorage.getItem('userRole') || null;
+
+    // Mock backend data (in a real app, this would come from API calls)
+    // This is stored here so the customer side can access it without a separate backend
+    // In a real app, customer would fetch this from the backend
+    let mockPlantCosts = JSON.parse(localStorage.getItem('plantCosts')) || [
+        { id: 1, capacity: 1, cost: 91000 },
+        { id: 2, capacity: 2, cost: 161000 },
+        { id: 3, capacity: 3, cost: 220000 },
+        { id: 4, capacity: 4, cost: 290000 }, // Example for custom 4kW
+        { id: 5, capacity: 5, cost: 350000 }  // Example for custom 5kW
+    ];
+
+    // Ensure mockPlantCosts is saved to localStorage so admin changes persist
+    function saveMockPlantCosts() {
+        localStorage.setItem('plantCosts', JSON.stringify(mockPlantCosts));
+    }
+    // Save initial state if not already present
+    if (!localStorage.getItem('plantCosts')) {
+        saveMockPlantCosts();
+    }
+
+    // --- Translations object ---
+    const translations = {
+        en: {
+            title: "Property Selection System",
+            subtitle: "Step-by-step process",
+            languageTitle: "Select Language",
+            loginTitle: "Login to Your Account",
+            registerTitle: "Create Account",
+            propertyTitle: "Select Property Type",
+            emailLabel: "Email Address",
+            passwordLabel: "Password",
+            nameLabel: "Full Name",
+            phoneLabel: "Phone Number",
+            confirmLabel: "Confirm Password",
+            noAccount: "Don't have an account?",
+            haveAccount: "Already have an account?",
+            registerLink: "Register here",
+            loginLink: "Login here",
+            loginBtn: "Login",
+            registerBtn: "Register",
+            house: "House",
+            commercial: "Commercial",
+            service: "Service",
+            subTitle: "Select House Type:",
+            pmSuryaGahr: "PM Surya Gahr",
+            nonDcr: "Non DCR",
+            adminLinkGuest: "Guest Admin Access (for testing)",
+            backLogin: "Back to Login",
+            continueBtn: "Continue",
+            logoutBtn: "Logout",
+            houseSelected: "You selected: House",
+            commercialSelected: "You selected: Commercial",
+            serviceSelected: "You selected: Service",
+            pmSuryaGahrSelected: "You selected: House → PM Surya Gahr",
+            nonDcrSelected: "You selected: House → Non DCR",
+            documentsTitle: "Documents Required",
+            documentsNote: "All documents should belong to the same person whose name is on the current bill",
+            doc1: "Aadhar Card",
+            doc2: "PAN Card",
+            doc3: "Bank Pass Book",
+            doc4: "4 Months Current Bill",
+            doc5: "Aadhar Linked Mobile Number",
+            subsidyTitle: "Subsidy",
+            plantCostTitle: "Plant Cost",
+            plantCapacityHeader: "Plant Capacity",
+            subsidyAmountHeader: "Subsidy Amount",
+            costHeader: "Cost",
+            customKwLabel: "Custom Plant Size (4-9 kW):",
+            customCostLabel: "Custom Cost:",
+            // Messages
+            enterEmailPass: "Please enter email and password",
+            passwordsMismatch: "Passwords do not match",
+            fillAllFields: "Please fill all fields",
+            registrationSuccess: "Registration successful! Logging in...",
+            loginFailed: "Login failed. Please check your credentials.",
+            invalidEmailPass: "Invalid email or password",
+            loginError: "An error occurred during login.",
+            registrationError: "An error occurred during registration.",
+            adminAccessGranted: "Access granted! Redirecting to admin page...",
+            invalidAccessCode: "Invalid access code",
+            errorFetchingCosts: "Error fetching plant costs."
+        },
+        te: {
+            title: "ఆస్తి ఎంపిక వ్యవస్థ",
+            subtitle: "దశల వారీ ప్రక్రియ",
+            languageTitle: "భాషను ఎంచుకోండి",
+            loginTitle: "మీ ఖాతాలోకి లాగిన్ అవ్వండి",
+            registerTitle: "ఖాతా సృష్టించండి",
+            propertyTitle: "ఆస్తి రకాన్ని ఎంచుకోండి",
+            emailLabel: "ఇమెయిల్ చిరునామా",
+            passwordLabel: "పాస్వర్డ్",
+            nameLabel: "పూర్తి పేరు",
+            phoneLabel: "ఫోన్ నంబర్",
+            confirmLabel: "పాస్‌వర్డ్‌ని నిర్ధారించండి",
+            noAccount: "ఖాతా లేదా?",
+            haveAccount: "ఇప్పటికే ఖాతా ఉందా?",
+            registerLink: "ఇక్కడ నమోదు చేసుకోండి",
+            loginLink: "ఇక్కడ లాగిన్ అవ్వండి",
+            loginBtn: "లాగిన్",
+            registerBtn: "నమోదు చేసుకోండి",
+            house: "హౌస్",
+            commercial: "కామర్షియల్",
+            service: "సేవ",
+            subTitle: "హౌస్ రకాన్ని ఎంచుకోండి:",
+            pmSuryaGahr: "పిఎం సూర్య గృహం",
+            nonDcr: "నాన్ డిసిఆర్",
+            adminLinkGuest: "అతిథి అడ్మిన్ యాక్సెస్ (పరీక్ష కోసం)",
+            backLogin: "లాగిన్‌కు తిరిగి వెళ్ళండి",
+            continueBtn: "కొనసాగించు",
+            logoutBtn: "లాగౌట్",
+            houseSelected: "మీరు ఎంచుకున్నారు: హౌస్",
+            commercialSelected: "మీరు ఎంచుకున్నారు: కామర్షియల్",
+            serviceSelected: "మీరు ఎంచుకున్నారు: సేవ",
+            pmSuryaGahrSelected: "మీరు ఎంచుకున్నారు: హౌస్ → పిఎం సూర్య గృహం",
+            nonDcrSelected: "మీరు ఎంచుకున్నారు: హౌస్ → నాన్ డిసిఆర్",
+            documentsTitle: "అవసరమైన డాక్యుమెంట్స్",
+            documentsNote: "ఈ డాక్యుమెంట్స్ అన్నీ ప్రస్తుత బిల్లులో పేరు ఉన్న వ్యక్తికి చెందినవి",
+            doc1: "ఆధార్ కార్డు",
+            doc2: "పాన్ కార్డు",
+            doc3: "బ్యాంక్ పాస్ బుక్",
+            doc4: "4 నెలల ప్రస్తుత బిల్లు",
+            doc5: "ఆధార్ లింక్ మొబైల్ నంబర్",
+            subsidyTitle: "సబ్సిడీ",
+            plantCostTitle: "ప్లాంట్ ఖర్చు",
+            plantCapacityHeader: "ప్లాంట్ సామర్థ్యం",
+            subsidyAmountHeader: "సబ్సిడీ మొత్తం",
+            costHeader: "ఖర్చు",
+            customKwLabel: "కస్టమ్ ప్లాంట్ సైజు (4-9 kW):",
+            customCostLabel: "కస్టమ్ ఖర్చు:",
+            // Messages
+            enterEmailPass: "దయచేసి ఇమెయిల్ మరియు పాస్వర్డ్ నమోదు చేయండి",
+            passwordsMismatch: "పాస్‌వర్డ్‌లు సరిపోలలేదు",
+            fillAllFields: "దయచేసి అన్ని ఫీల్డ్‌లను పూరించండి",
+            registrationSuccess: "నమోదు విజయవంతమైంది! లాగిన్ అవుతోంది...",
+            loginFailed: "లాగిన్ విఫలమైంది. దయచేసి మీ ఆధారాలను తనిఖీ చేయండి.",
+            invalidEmailPass: "చెల్లని ఇమెయిల్ లేదా పాస్‌వర్డ్",
+            loginError: "లాగిన్‌లో లోపం ఏర్పడింది.",
+            registrationError: "నమోదులో లోపం ఏర్పడింది.",
+            adminAccessGranted: "ప్రవేశం అనుమతించబడింది! అడ్మిన్ పేజీకి మళ్లించబడుతోంది...",
+            invalidAccessCode: "చెల్లని యాక్సెస్ కోడ్",
+            errorFetchingCosts: "ప్లాంట్ ధరలను పొందడంలో లోపం ఏర్పడింది."
+        }
+    };
+
+    // Update UI based on selected language
+    function updateUIForLanguage(lang) {
+        const langData = translations[lang] || translations.en;
+
+        // Update UI elements
+        document.getElementById('main-title').textContent = langData.title;
+        document.getElementById('main-subtitle').textContent = langData.subtitle;
+        document.getElementById('language-title').textContent = langData.languageTitle;
+        document.getElementById('login-title').textContent = langData.loginTitle;
+        document.getElementById('register-title').textContent = langData.registerTitle;
+        document.getElementById('property-title').textContent = langData.propertyTitle;
+        document.getElementById('email-label').textContent = langData.emailLabel;
+        document.getElementById('password-label').textContent = langData.passwordLabel;
+        document.getElementById('name-label').textContent = langData.nameLabel;
+        document.getElementById('phone-label').textContent = langData.phoneLabel;
+        document.getElementById('reg-email-label').textContent = langData.emailLabel; // For register form email
+        document.getElementById('reg-password-label').textContent = langData.passwordLabel; // For register form password
+        document.getElementById('confirm-label').textContent = langData.confirmLabel;
+        document.getElementById('no-account').innerHTML = `${langData.noAccount} <a onclick="showRegister()">${langData.registerLink}</a>`;
+        document.getElementById('have-account').innerHTML = `${langData.haveAccount} <a onclick="showLogin()">${langData.loginLink}</a>`;
+        document.getElementById('login-btn').textContent = langData.loginBtn;
+        document.getElementById('register-btn').textContent = langData.registerBtn;
+        document.getElementById('house-btn').textContent = langData.house;
+        document.getElementById('commercial-btn').textContent = langData.commercial;
+        document.getElementById('service-btn').textContent = langData.service;
+        document.getElementById('sub-options-title').textContent = langData.subTitle;
+        document.getElementById('pm-btn').textContent = langData.pmSuryaGahr;
+        document.getElementById('non-dcr-btn').textContent = langData.nonDcr;
+        document.getElementById('admin-link-guest').textContent = langData.adminLinkGuest; // For guest admin link
+        document.querySelector('.nav-controls .prev-btn').textContent = langData.backLogin;
+        document.querySelector('#language-page .next-btn').textContent = langData.continueBtn;
+        document.querySelector('#property-page .next-btn').textContent = langData.logoutBtn; // Logout button
+
+        // Update PM Surya Gahr details
+        document.getElementById('documents-title').textContent = langData.documentsTitle;
+        document.getElementById('documents-note').textContent = langData.documentsNote;
+        document.getElementById('doc1').textContent = langData.doc1;
+        document.getElementById('doc2').textContent = langData.doc2;
+        document.getElementById('doc3').textContent = langData.doc3;
+        document.getElementById('doc4').textContent = langData.doc4;
+        document.getElementById('doc5').textContent = langData.doc5;
+        document.getElementById('subsidy-title').textContent = langData.subsidyTitle;
+        document.getElementById('plant-capacity-header').textContent = langData.plantCapacityHeader;
+        document.getElementById('subsidy-amount-header').textContent = langData.subsidyAmountHeader;
+        document.getElementById('plant-cost-title').textContent = langData.plantCostTitle;
+        document.getElementById('plant-capacity-header2').textContent = langData.plantCapacityHeader;
+        document.getElementById('cost-header').textContent = langData.costHeader;
+        document.getElementById('custom-kw-label').textContent = langData.customKwLabel;
+        document.getElementById('custom-cost-label').textContent = langData.customCostLabel;
+        // No update buttons on customer side
+    }
+
+    // Initialize language and check role on load
+    document.addEventListener('DOMContentLoaded', () => {
+        updateUIForLanguage(currentLanguage);
+
+        // If already logged in and role is admin, redirect to admin page
+        if (currentUserRole === 'admin') {
+            window.location.href = 'admin.html';
+            return; // Stop further execution for this page
+        }
+
+        // If on property page (e.g., direct access after login/refresh) and a customer, load costs
+        if (document.getElementById('property-page').classList.contains('active') && currentUserRole === 'customer') {
+            fetchAndDisplayPlantCostsForCustomer();
+        }
+    });
+
+    // Page navigation
+    function goToPage(pageId, progress) {
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
+        });
+
+        // Show the selected page
+        document.getElementById(pageId).classList.add('active');
+
+        // Update progress bar
+        document.getElementById('progress').style.width = progress + '%';
+
+        // Scroll to top
+        window.scrollTo(0, 0);
+
+        // Specific action after navigating to property page
+        if (pageId === 'property-page' && currentUserRole === 'customer') {
+            fetchAndDisplayPlantCostsForCustomer(); // Refresh costs for customer view
+        }
+    }
+
+    // Language selection
+    function selectLanguage(lang) {
+        localStorage.setItem('userLanguage', lang);
+        currentLanguage = lang;
+        updateUIForLanguage(lang);
+    }
+
+    // Show register form
+    function showRegister() {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('register-form').style.display = 'block';
+    }
+
+    // Show login form
+    function showLogin() {
+        document.getElementById('register-form').style.display = 'none';
+        document.getElementById('login-form').style.display = 'block';
+    }
+
+    // Login function
+    async function login() {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+
+        if (email && password) {
+            try {
+                // --- MOCK LOGIN LOGIC (REPLACE WITH REAL API CALLS) ---
+                // This data would come from your backend database
+                const mockUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+
+                const user = mockUsers.find(u => u.email === email && u.password === password);
+
+                if (user) {
+                    localStorage.setItem('userRole', user.role); // Store role
+                    currentUserRole = user.role; // Update current role in JS
+                    alert(translations[currentLanguage].registrationSuccess); // Re-using translation for 'login successful'
+                    if (user.role === 'admin') {
+                        window.location.href = 'admin.html'; // Redirect to admin portal
+                    } else {
+                        goToPage('property-page', 100); // Redirect to property selection for customer
+                    }
+                } else {
+                    alert(translations[currentLanguage].invalidEmailPass);
+                }
+                // --- END MOCK LOGIN LOGIC ---
+
+            } catch (error) {
+                console.error('Login error:', error);
+                alert(translations[currentLanguage].loginError);
+            }
+        } else {
+            alert(translations[currentLanguage].enterEmailPass);
+        }
+    }
+
+    // Register function
+    async function register() {
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        if (password !== confirmPassword) {
+            alert(translations[currentLanguage].passwordsMismatch);
+            return;
+        }
+
+        if (name && phone && email && password) {
+            try {
+                // --- MOCK REGISTER LOGIC (REPLACE WITH REAL API CALLS) ---
+                let mockUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+                const userId = mockUsers.length > 0 ? Math.max(...mockUsers.map(u => u.id)) + 1 : 1;
+
+                // Check if email already exists
+                if (mockUsers.some(u => u.email === email)) {
+                    alert("This email is already registered. Please login or use a different email.");
+                    return;
+                }
+
+                const newUser = {
+                    id: userId,
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    password: password, // In a real app, hash this!
+                    role: "customer" // Default new users to 'customer'
+                };
+                mockUsers.push(newUser);
+                localStorage.setItem('registeredUsers', JSON.stringify(mockUsers));
+                // --- END MOCK REGISTER LOGIC ---
+
+                alert(translations[currentLanguage].registrationSuccess);
+                showLogin(); // Go to login form after successful registration
+
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert(translations[currentLanguage].registrationError);
+            }
+        } else {
+            alert(translations[currentLanguage].fillAllFields);
+        }
+    }
+
+    // Property selection functionality
+    document.addEventListener('DOMContentLoaded', () => {
+        const mainOptions = document.querySelectorAll('.option-btn[data-option]');
+        const subOptionsContainer = document.getElementById('subOptions');
+        const messageContainer = document.getElementById('message');
+        const pmDetails = document.getElementById('pm-details');
+
+        // Handle main option selection
+        mainOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove selection from all buttons
+                mainOptions.forEach(btn => btn.classList.remove('selected'));
+
+                // Select clicked button
+                option.classList.add('selected');
+
+                // Show sub-options only for House
+                if (option.dataset.option === 'house') {
+                    subOptionsContainer.style.display = 'block';
+                    messageContainer.style.display = 'none';
+                    pmDetails.style.display = 'none'; // Hide details until sub-option chosen
+                } else {
+                    subOptionsContainer.style.display = 'none';
+                    pmDetails.style.display = 'none';
+                    messageContainer.style.display = 'block';
+                    messageContainer.textContent = currentLanguage === 'te' ?
+                        `మీరు ఎంచుకున్నారు: ${option.textContent}` :
+                        `You selected: ${option.textContent}`;
+                }
+            });
+        });
+
+        // Handle sub-option selection
+        document.querySelectorAll('.sub-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                messageContainer.style.display = 'block';
+
+                if (btn.dataset.suboption === 'pm-surya-gahr') {
+                    pmDetails.style.display = 'block';
+                    messageContainer.textContent = currentLanguage === 'te' ?
+                        `మీరు ఎంచుకున్నారు: హౌస్ → ${btn.textContent}` :
+                        `You selected: House → ${btn.textContent}`;
+                    if (currentUserRole === 'customer') {
+                        fetchAndDisplayPlantCostsForCustomer(); // Fetch costs when PM Surya Gahr is selected
+                    }
+                } else {
+                    pmDetails.style.display = 'none';
+                    messageContainer.textContent = currentLanguage === 'te' ?
+                        `మీరు ఎంచుకున్నారు: హౌస్ → ${btn.textContent}` :
+                        `You selected: House → ${btn.textContent}`;
+                }
+            });
+        });
+    });
+
+    // Function to fetch and display plant costs for customers
+    async function fetchAndDisplayPlantCostsForCustomer() {
+        // This function should only run if the user is a customer
+        if (currentUserRole !== 'customer') return;
+
+        try {
+            // Fetch from localStorage (simulating API call from admin page's changes)
+            const rates = JSON.parse(localStorage.getItem('plantCosts')) || [];
+            const sortedRates = rates.sort((a, b) => a.capacity - b.capacity);
+
+            const tbody = document.getElementById('customer-plant-cost-tbody');
+            tbody.innerHTML = ''; // Clear existing rows
+
+            sortedRates.forEach(rate => {
+                const row = tbody.insertRow();
+                // Using Intl.NumberFormat for correct currency formatting based on locale
+                const formattedCost = new Intl.NumberFormat(currentLanguage === 'te' ? 'en-IN' : 'en-US', { style: 'currency', currency: 'INR' }).format(rate.cost);
+                row.innerHTML = `
+                    <td>${rate.capacity} kW</td>
+                    <td>${formattedCost}</td>
+                `;
+            });
+
+            // Update custom cost fields (read-only for customer)
+            const customKwInput = document.getElementById('custom-kw');
+            const customCostInput = document.getElementById('custom-cost');
+            const selectedKw = parseInt(customKwInput.value);
+
+            const customRate = sortedRates.find(r => r.capacity === selectedKw);
+            if (customRate) {
+                customCostInput.value = new Intl.NumberFormat(currentLanguage === 'te' ? 'en-IN' : 'en-US', { style: 'currency', currency: 'INR' }).format(customRate.cost);
+            } else {
+                customCostInput.value = currentLanguage === 'te' ? "లభ్యం లేదు" : "Not Available";
+            }
+
+            // Add an event listener to update custom cost if custom-kw input changes
+            customKwInput.onchange = () => {
+                const newSelectedKw = parseInt(customKwInput.value);
+                const newCustomRate = sortedRates.find(r => r.capacity === newSelectedKw);
+                if (newCustomRate) {
+                    customCostInput.value = new Intl.NumberFormat(currentLanguage === 'te' ? 'en-IN' : 'en-US', { style: 'currency', currency: 'INR' }).format(newCustomRate.cost);
+                } else {
+                    customCostInput.value = currentLanguage === 'te' ? "లభ్యం లేదు" : "Not Available";
+                }
+            };
+
+
+        } catch (error) {
+            console.error('Error fetching plant costs:', error);
+            alert(translations[currentLanguage].errorFetchingCosts);
+        }
+    }
+
+    // Admin access function (for guest access testing - not main login path)
+    function showAdminPrompt() {
+        const prompts = {
+            en: "Enter admin access code:",
+            te: "అడ్మిన్ యాక్సెస్ కోడ్‌ని నమోదు చేయండి:"
+        };
+
+        const code = prompt(prompts[currentLanguage]);
+        if(code === "1234") { // Hardcoded code for guest admin access
+            localStorage.setItem('userRole', 'admin'); // Set role to admin
+            alert(translations[currentLanguage].adminAccessGranted);
+            window.location.href = 'admin.html'; // Redirect to admin page
+        } else {
+            alert(translations[currentLanguage].invalidAccessCode);
+        }
+    }
+
+    // Logout function for customer
+    function logoutCustomer() {
+        localStorage.removeItem('userRole'); // Clear role
+        // In a real app: localStorage.removeItem('authToken'); // Clear any authentication tokens
+        alert(currentLanguage === 'te' ? "మీరు విజయవంతంగా లాగౌట్ అయ్యారు." : "You have been logged out successfully.");
+        window.location.href = 'index.html'; // Redirect to login page
+    }
+</script>
+
+
+</body>
+</html>
